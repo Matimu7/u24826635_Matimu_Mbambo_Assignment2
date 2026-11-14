@@ -184,3 +184,78 @@ function populateDropdowns() {
   // Default year to 2023
   yearSelect.value = "2023";
 }
+
+
+// ===== SUMMARY STATISTICS & KPI CARDS =====
+
+function getIndicatorUnit(indicatorName) {
+  if (indicatorName.indexOf("US$") !== -1) {
+    return "US$";
+  } else if (indicatorName.indexOf("%") !== -1) {
+    return "%";
+  }
+  return "";
+}
+
+function updateSummaryIndicators() {
+  const selectedIndicator = indicatorSelect.value;
+  const selectedCountry = countrySelect.value;
+  const unit = getIndicatorUnit(selectedIndicator);
+
+  // Filter records for the chosen indicator
+  const matchingRecords = dataset.filter(function (item) {
+    if (selectedCountry === "all") {
+      return item.indicator === selectedIndicator;
+    }
+    return item.indicator === selectedIndicator && item.country === selectedCountry;
+  });
+
+  if (matchingRecords.length === 0) {
+    return;
+  }
+
+  // 1. Calculate Mean (Average value from 2000 to 2023)
+  let sum = 0;
+  let count = 0;
+
+  for (let i = 0; i < matchingRecords.length; i++) {
+    for (let j = 0; j < yearsList.length; j++) {
+      const yr = yearsList[j];
+      const val = matchingRecords[i].values[yr];
+      if (val !== null) {
+        sum += val;
+        count++;
+      }
+    }
+  }
+
+  const averageVal = count > 0 ? (sum / count).toFixed(2) : "-";
+
+  // 2. Calculate Percentage Change (2000 vs 2023)
+  let totalStart2000 = 0;
+  let totalEnd2023 = 0;
+
+  for (let i = 0; i < matchingRecords.length; i++) {
+    totalStart2000 += matchingRecords[i].values["2000"] || 0;
+    totalEnd2023 += matchingRecords[i].values["2023"] || 0;
+  }
+
+  let percentChange = "-";
+  if (totalStart2000 !== 0) {
+    const diff = ((totalEnd2023 - totalStart2000) / Math.abs(totalStart2000)) * 100;
+    const sign = diff > 0 ? "+" : "";
+    percentChange = sign + diff.toFixed(1) + "%";
+  }
+
+  // Update the DOM elements on the dashboard
+  document.getElementById("average-value").textContent = averageVal + " " + unit;
+  document.getElementById("change-value").textContent = percentChange;
+
+  if (selectedCountry === "all") {
+    document.getElementById("average-note").textContent = "Regional mean across 5 countries (2000–2023)";
+    document.getElementById("change-note").textContent = "Regional shift from 2000 to 2023";
+  } else {
+    document.getElementById("average-note").textContent = selectedCountry + " mean (2000–2023)";
+    document.getElementById("change-note").textContent = selectedCountry + " change from 2000 to 2023";
+  }
+}
