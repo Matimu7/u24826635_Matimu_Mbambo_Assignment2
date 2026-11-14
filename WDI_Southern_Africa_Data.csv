@@ -1,0 +1,21 @@
+Country Name,Country Code,Series Name,Series Code,Annualised GDP and Development Growth Rate (2000–2023)
+Botswana,BWA,GDP per capita (current US$),NY.GDP.PCAP.CD,3.56090499632675
+Botswana,BWA,Population growth (annual %),SP.POP.GROW,-1.1400911154978
+Botswana,BWA,Access to electricity (% of population),EG.ELC.ACCS.ZS,4.58082003171372
+Mozambique,MOZ,GDP per capita (current US$),NY.GDP.PCAP.CD,2.79522253437713
+Mozambique,MOZ,Population growth (annual %),SP.POP.GROW,1.27346237988348
+Mozambique,MOZ,Access to electricity (% of population),EG.ELC.ACCS.ZS,7.71839203163846
+Namibia,NAM,GDP per capita (current US$),NY.GDP.PCAP.CD,2.92472039882155
+Namibia,NAM,Population growth (annual %),SP.POP.GROW,0.281411391067105
+Namibia,NAM,Access to electricity (% of population),EG.ELC.ACCS.ZS,1.91505195715331
+South Africa,ZAF,GDP per capita (current US$),NY.GDP.PCAP.CD,2.73366413238366
+South Africa,ZAF,Population growth (annual %),SP.POP.GROW,1.62153841117936
+South Africa,ZAF,Access to electricity (% of population),EG.ELC.ACCS.ZS,0.833546086897681
+Zimbabwe,ZWE,GDP per capita (current US$),NY.GDP.PCAP.CD,5.91763274056512
+Zimbabwe,ZWE,Population growth (annual %),SP.POP.GROW,2.62300912438866
+Zimbabwe,ZWE,Access to electricity (% of population),EG.ELC.ACCS.ZS,2.65059368559468
+,,,,
+,,,,
+,,,,
+Data from database: World Development Indicators,,,,
+Last Updated: 11/11/2026,,,,
