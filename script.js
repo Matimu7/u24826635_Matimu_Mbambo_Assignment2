@@ -69,3 +69,118 @@ window.addEventListener("hashchange", function () {
     showPage("home");
   }
 });
+
+
+// ===== LOAD CSV DATASET & POPULATE DROPDOWNS =====
+
+let dataset = [];
+let yearsList = [];
+let indicatorsList = [];
+let countriesList = [];
+
+const indicatorSelect = document.getElementById("indicator-select");
+const countrySelect = document.getElementById("country-select");
+const yearSelect = document.getElementById("year-select");
+
+// Fetch and parse the World Bank CSV file
+fetch("WDI_Southern_Africa_Data.csv")
+  .then(function (response) {
+    return response.text();
+  })
+  .then(function (csvText) {
+    parseCSVData(csvText);
+    populateDropdowns();
+
+    // Run dashboard update functions once they are added in later steps
+    if (typeof updateSummaryIndicators === "function") {
+      updateSummaryIndicators();
+    }
+    if (typeof updateAllCharts === "function") {
+      updateAllCharts();
+    }
+  })
+  .catch(function (error) {
+    console.error("Error loading CSV file:", error);
+  });
+
+// Convert raw CSV text into clean JavaScript objects
+function parseCSVData(csvText) {
+  const lines = csvText.trim().split("\n");
+  const headers = lines[0].split(",");
+
+  // Extract year numbers from headers like "2000 [YR2000]"
+  yearsList = [];
+  for (let i = 4; i < headers.length; i++) {
+    const cleanYear = headers[i].trim().substring(0, 4);
+    yearsList.push(cleanYear);
+  }
+
+  // Loop through data rows and skip empty/footer rows
+  dataset = [];
+  for (let i = 1; i < lines.length; i++) {
+    const row = lines[i].trim();
+    if (row === "" || row.startsWith("Data from") || row.startsWith("Last Updated")) {
+      continue;
+    }
+
+    const cols = row.split(",");
+    const countryName = cols[0] ? cols[0].trim() : "";
+    const seriesName = cols[2] ? cols[2].trim() : "";
+
+    if (!countryName || !seriesName) {
+      continue;
+    }
+
+    // Store yearly values in an object mapped by year
+    let yearlyValues = {};
+    for (let j = 4; j < headers.length; j++) {
+      const yr = headers[j].trim().substring(0, 4);
+      const val = parseFloat(cols[j]);
+      yearlyValues[yr] = isNaN(val) ? null : val;
+    }
+
+    dataset.push({
+      country: countryName,
+      indicator: seriesName,
+      values: yearlyValues
+    });
+
+    // Track unique countries and indicators
+    if (countriesList.indexOf(countryName) === -1) {
+      countriesList.push(countryName);
+    }
+    if (indicatorsList.indexOf(seriesName) === -1) {
+      indicatorsList.push(seriesName);
+    }
+  }
+}
+
+// Fill the three HTML select dropdowns
+function populateDropdowns() {
+  indicatorSelect.innerHTML = "";
+  for (let i = 0; i < indicatorsList.length; i++) {
+    const opt = document.createElement("option");
+    opt.value = indicatorsList[i];
+    opt.textContent = indicatorsList[i];
+    indicatorSelect.appendChild(opt);
+  }
+
+  countrySelect.innerHTML = '<option value="all">All countries</option>';
+  for (let i = 0; i < countriesList.length; i++) {
+    const opt = document.createElement("option");
+    opt.value = countriesList[i];
+    opt.textContent = countriesList[i];
+    countrySelect.appendChild(opt);
+  }
+
+  yearSelect.innerHTML = "";
+  for (let i = 0; i < yearsList.length; i++) {
+    const opt = document.createElement("option");
+    opt.value = yearsList[i];
+    opt.textContent = yearsList[i];
+    yearSelect.appendChild(opt);
+  }
+
+  // Default year to 2023
+  yearSelect.value = "2023";
+}
