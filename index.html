@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Development Dashboard</title>
+  <!-- External CSS file -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header id="site-header" class="header">
+    <div class="container nav-flex">
+      <div class="logo-area">
+        <h1>World Development Dashboard</h1>
+      </div>
+      <nav id="main-nav" class="topnav">
+        <ul>
+          <li><a href="#home" id="nav-home" class="active">Home</a></li>
+          <li><a href="#analysis" id="nav-analysis">Data Analysis</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ==================== VIEW 1: HOME ==================== -->
+    <section id="home" class="view active-view">
+      <div class="container">
+
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+          <span class="tag">Southern Africa WDI (2000 – 2023)</span>
+          <h2>About this dashboard</h2>
+          <p>
+            This dashboard explores development indicators for selected countries
+            over time, using data from the World Bank.
+          </p>
+          <a href="#analysis" id="start-button" class="btn">Open the data analysis</a>
+        </div>
+
+        <!-- Two Column Info Grid -->
+        <div class="home-grid">
+          <div class="info-box">
+            <h3>About the dataset</h3>
+            <p>
+              Source: World Development Indicators (WDI), World Bank.
+              The dataset contains yearly values for several indicators
+              (for example GDP per capita, life expectancy and population)
+              across a group of countries.
+            </p>
+          </div>
+
+          <div class="features-list">
+            <h3>What you can do</h3>
+            <ul>
+              <li>Compare countries in a chosen year</li>
+              <li>Follow how an indicator changes over time</li>
+              <li>Filter the data by country, indicator and year range</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: DATA ANALYSIS ==================== -->
+    <section id="analysis" class="view">
+      <div class="container">
+        <div class="page-title">
+          <h2>Data Analysis Dashboard</h2>
+          <p>Explore trends and compare countries from 2000 to 2023</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div id="controls" class="filter-section">
+          <h3>Filters</h3>
+
+          <div class="control">
+            <label for="indicator-select">Indicator:</label>
+            <select id="indicator-select">
+              <option value="">Loading...</option>
+            </select>
+          </div>
+
+          <div class="control">
+            <label for="country-select">Country:</label>
+            <select id="country-select">
+              <option value="all">All countries</option>
+            </select>
+          </div>
+
+          <div class="control">
+            <label for="year-select">Year (for comparison chart):</label>
+            <select id="year-select">
+              <option value="">Loading...</option>
+            </select>
+          </div>
+
+          <button type="button" id="reset-button" class="btn-reset">Reset filters</button>
+        </div>
+
+        <!-- Summary Cards -->
+        <div id="summary" class="summary-section">
+          <h3>Summary</h3>
+
+          <div class="row">
+            <div class="indicator-card" id="indicator-average">
+              <h4>Average value</h4>
+              <p class="indicator-value" id="average-value">-</p>
+              <p class="indicator-note" id="average-note"></p>
+            </div>
+
+            <div class="indicator-card" id="indicator-change">
+              <h4>Change over period</h4>
+              <p class="indicator-value" id="change-value">-</p>
+              <p class="indicator-note" id="change-note"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div id="charts" class="charts-section">
+          <h3>Charts</h3>
+
+          <div class="chart-box" id="chart-line-box">
+            <p class="chart-title">Trend over time (line chart)</p>
+            <canvas id="line-chart"></canvas>
+          </div>
+
+          <div class="chart-box" id="chart-bar-box">
+            <p class="chart-title">Country comparison (bar chart)</p>
+            <canvas id="bar-chart"></canvas>
+          </div>
+
+          <div class="chart-box" id="chart-third-box">
+            <p class="chart-title">Third view (doughnut or scatter chart)</p>
+            <canvas id="third-chart"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="footer">
+    <div class="container">
+      <p>Data: World Bank, World Development Indicators.</p>
+    </div>
+  </footer>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Your JavaScript File -->
+  <script src="script.js"></script>
+
+</body>
+</html>
