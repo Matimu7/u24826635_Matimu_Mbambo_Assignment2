@@ -35,10 +35,9 @@
         <!-- Hero Banner -->
         <div class="hero-banner">
           <span class="tag">Southern Africa WDI (2000 – 2023)</span>
-          <h2>About this dashboard</h2>
+          <h2>Southern Africa Development Tracker</h2>
           <p>
-            This dashboard explores development indicators for selected countries
-            over time, using data from the World Bank.
+            An interactive data dashboard tracking economic growth, population trends, and electricity access across five Southern African nations namely Botswana, Mozambique, Namibia, South Africa, and Zimbabwe in the years 2000 to 2023.
           </p>
           <a href="#analysis" id="start-button" class="btn">Open the data analysis</a>
         </div>
@@ -48,19 +47,17 @@
           <div class="info-box">
             <h3>About the dataset</h3>
             <p>
-              Source: World Development Indicators (WDI), World Bank.
-              The dataset contains yearly values for several indicators
-              (for example GDP per capita, life expectancy and population)
-              across a group of countries.
+              Source: World Development Indicators (WDI), World Bank. The dataset covers annual records from 2000 to 2023 across Botswana, Mozambique, Namibia, South Africa, and Zimbabwe for three core indicators: GDP per capita (current US$), Population growth (annual %), and Access to electricity (% of population).
             </p>
           </div>
 
           <div class="features-list">
             <h3>What you can do</h3>
             <ul>
-              <li>Compare countries in a chosen year</li>
-              <li>Follow how an indicator changes over time</li>
-              <li>Filter the data by country, indicator and year range</li>
+              <li>Switch between GDP per capita, population growth, and electricity access</li>
+              <li>Track multi-year trends from 2000 to 2023 using an interactive line chart</li>
+              <li>Compare all five countries side-by-side in any chosen year via bar and doughnut charts</li>
+              <li>Inspect regional or country-specific mean values and overall percentage change</li>
             </ul>
           </div>
         </div>
@@ -138,7 +135,7 @@
           </div>
 
           <div class="chart-box" id="chart-third-box">
-            <p class="chart-title">Third view (doughnut or scatter chart)</p>
+            <p class="chart-title">Third view (doughnut chart)</p>
             <canvas id="third-chart"></canvas>
           </div>
         </div>
