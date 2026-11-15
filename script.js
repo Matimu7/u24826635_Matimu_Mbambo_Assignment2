@@ -408,3 +408,27 @@ function updateAllCharts() {
     }
   });
 }
+
+// ===== DYNAMIC FILTERS & RESET CONTROLS =====
+
+const resetButton = document.getElementById("reset-button");
+
+function refreshDashboard() {
+  updateSummaryIndicators();
+  updateAllCharts();
+}
+
+// Listen for changes on any dropdown filter
+indicatorSelect.addEventListener("change", refreshDashboard);
+countrySelect.addEventListener("change", refreshDashboard);
+yearSelect.addEventListener("change", refreshDashboard);
+
+// Reset all filters back to default values
+resetButton.addEventListener("click", function () {
+  if (indicatorsList.length > 0) {
+    indicatorSelect.value = indicatorsList[0];
+  }
+  countrySelect.value = "all";
+  yearSelect.value = "2023";
+  refreshDashboard();
+});
