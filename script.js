@@ -259,3 +259,152 @@ function updateSummaryIndicators() {
     document.getElementById("change-note").textContent = selectedCountry + " change from 2000 to 2023";
   }
 }
+
+
+// ===== CHART.JS VISUALIZATIONS (LINE, BAR & DOUGHNUT) =====
+
+let lineChart = null;
+let barChart = null;
+let doughnutChart = null;
+
+// High-contrast colors matching the dashboard theme
+const paletteColors = ["#d4f035", "#38bdf8", "#f97316", "#a855f7", "#22c55e"];
+
+function updateAllCharts() {
+  const selectedIndicator = indicatorSelect.value;
+  const selectedCountry = countrySelect.value;
+  const selectedYear = yearSelect.value;
+
+  const indicatorRecords = dataset.filter(function (item) {
+    return item.indicator === selectedIndicator;
+  });
+
+  if (indicatorRecords.length === 0) {
+    return;
+  }
+
+  // --- CHART 1: LINE CHART (TREND OVER TIME 2000-2023) ---
+  let lineDatasets = [];
+  for (let i = 0; i < indicatorRecords.length; i++) {
+    const rec = indicatorRecords[i];
+    if (selectedCountry === "all" || rec.country === selectedCountry) {
+      let dataPoints = [];
+      for (let j = 0; j < yearsList.length; j++) {
+        dataPoints.push(rec.values[yearsList[j]]);
+      }
+
+      lineDatasets.push({
+        label: rec.country,
+        data: dataPoints,
+        borderColor: paletteColors[i % paletteColors.length],
+        backgroundColor: paletteColors[i % paletteColors.length],
+        borderWidth: 2,
+        tension: 0.25,
+        fill: false
+      });
+    }
+  }
+
+  if (lineChart) {
+    lineChart.destroy();
+  }
+
+  const lineCtx = document.getElementById("line-chart").getContext("2d");
+  lineChart = new Chart(lineCtx, {
+    type: "line",
+    data: {
+      labels: yearsList,
+      datasets: lineDatasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: "#ffffff" } }
+      },
+      scales: {
+        x: { ticks: { color: "#9fa396" }, grid: { color: "#262920" } },
+        y: { ticks: { color: "#9fa396" }, grid: { color: "#262920" } }
+      }
+    }
+  });
+
+  // --- CHART 2: BAR CHART (COUNTRY COMPARISON IN SELECTED YEAR) ---
+  let barLabels = [];
+  let barValues = [];
+  let barColors = [];
+
+  for (let i = 0; i < indicatorRecords.length; i++) {
+    const rec = indicatorRecords[i];
+    barLabels.push(rec.country);
+    barValues.push(rec.values[selectedYear]);
+
+    // Highlight selected country in Volt Lime, mute others if filtered
+    if (selectedCountry === "all") {
+      barColors.push(paletteColors[i % paletteColors.length]);
+    } else if (rec.country === selectedCountry) {
+      barColors.push("#d4f035");
+    } else {
+      barColors.push("#323729");
+    }
+  }
+
+  if (barChart) {
+    barChart.destroy();
+  }
+
+  const barCtx = document.getElementById("bar-chart").getContext("2d");
+  barChart = new Chart(barCtx, {
+    type: "bar",
+    data: {
+      labels: barLabels,
+      datasets: [{
+        label: selectedIndicator + " (" + selectedYear + ")",
+        data: barValues,
+        backgroundColor: barColors,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: "#ffffff" } }
+      },
+      scales: {
+        x: { ticks: { color: "#9fa396" }, grid: { display: false } },
+        y: { ticks: { color: "#9fa396" }, grid: { color: "#262920" } }
+      }
+    }
+  });
+
+  // --- CHART 3: DOUGHNUT CHART (COUNTRY SHARE IN SELECTED YEAR) ---
+  if (doughnutChart) {
+    doughnutChart.destroy();
+  }
+
+  const doughnutCtx = document.getElementById("third-chart").getContext("2d");
+  doughnutChart = new Chart(doughnutCtx, {
+    type: "doughnut",
+    data: {
+      labels: barLabels,
+      datasets: [{
+        label: selectedYear,
+        data: barValues,
+        backgroundColor: paletteColors,
+        borderColor: "#171913",
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "right",
+          labels: { color: "#ffffff" }
+        }
+      }
+    }
+  });
+}
