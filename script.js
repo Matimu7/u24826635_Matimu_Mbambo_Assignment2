@@ -91,7 +91,6 @@ fetch("WDI_Southern_Africa_Data.csv")
     parseCSVData(csvText);
     populateDropdowns();
 
-    // Run dashboard update functions once they are added in later steps
     if (typeof updateSummaryIndicators === "function") {
       updateSummaryIndicators();
     }
@@ -270,10 +269,25 @@ let doughnutChart = null;
 // High-contrast colors matching the dashboard theme
 const paletteColors = ["#d4f035", "#38bdf8", "#f97316", "#a855f7", "#22c55e"];
 
+function updateChartTitles(indicator, country, year) {
+  const scopeLabel = country === "all" ? "All 5 Countries" : country;
+
+  document.getElementById("line-chart-title").textContent =
+    indicator + " — " + scopeLabel + " (2000–2023)";
+
+  document.getElementById("bar-chart-title").textContent =
+    "Country Comparison: " + indicator + " (" + year + ")";
+
+  document.getElementById("third-chart-title").textContent =
+    "Regional Breakdown: " + indicator + " (" + year + ")";
+}
+
 function updateAllCharts() {
   const selectedIndicator = indicatorSelect.value;
   const selectedCountry = countrySelect.value;
   const selectedYear = yearSelect.value;
+
+  updateChartTitles(selectedIndicator, selectedCountry, selectedYear);
 
   const indicatorRecords = dataset.filter(function (item) {
     return item.indicator === selectedIndicator;
